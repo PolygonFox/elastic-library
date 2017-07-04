@@ -9,11 +9,14 @@ const Metadata = require('./lib/metadata');
 let watchers = [];
 
 function init() {
-    for( const parser of config.parsers ) {
-        Metadata.addParser(require('./lib/parsers/' + parser));
+    for (let parser in config.parsers) {
+        let p = require('./lib/parsers/' + parser);
+        let c = config.parsers[parser];
+
+        Metadata.addParser(new p(c));
     }
 
-    for( const dir of config.media.directories ) {
+    for (const dir of config.media.directories) {
         watchers.push(new Watcher(dir));
     }
 
@@ -27,9 +30,12 @@ function init() {
         });
         w.on('watcher:read', (data) => {
             console.info('watcher:read', data);
+
+            let m = new Metadata(data.dir, data.filename);
+            m.read();
         });
 
-        //w.watch().read();
+        w.watch().read();
     });
 }
 

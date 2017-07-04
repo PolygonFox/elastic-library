@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "run": "node --harmony index.js"
+        "start": "node --harmony index.js"
     },
     "author": "Jurriën Dokter",
     "license": "ISC",
@@ -13,6 +13,7 @@
         "checksum": "^0.1.1",
         "collections": "^5.0.6",
         "elasticsearch": "^13.2.0",
+        "lodash": "^4.17.4",
         "node-getopt": "^0.2.3",
         "recursive-readdir": "^2.2.1"
     }

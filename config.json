@@ -8,7 +8,10 @@
             "/Volumes/SMALLCAKES/Personal/Images"
         ]
     },
-    "parsers": [
-        "checksum"
-    ]
+    "parsers": {
+        "checksum": null,
+        "path": {
+            "ignore": ["Volumes", "SMALLCAKES", "Personal", "Images"]
+        }
+    }
 }
