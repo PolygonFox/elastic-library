@@ -2,13 +2,20 @@ require('./lib/extend/promises');
 
 const config = require('./config.json');
 const elastic = require('elasticsearch');
+const queue = require('queue');
 
 const Watcher = require('./lib/watcher');
 const Metadata = require('./lib/metadata');
+const Indexer = require('./lib/indexer');
 
-let watchers = [];
+const watchers = [];
+const q = queue({
+    autostart: true,
+    concurrently: 5
+});
 
-function init() {
+const indexer = new Indexer(config);
+indexer.on('ready', () => {
     for (let parser in config.parsers) {
         let p = require('./lib/parsers/' + parser);
         let c = config.parsers[parser];
@@ -29,57 +36,29 @@ function init() {
             console.info('watcher:change', data);
         });
         w.on('watcher:read', (data) => {
-            console.info('watcher:read', data);
-
-            let m = new Metadata(data.dir, data.filename);
-            m.read();
+            q.push((cb) => {
+                let m = new Metadata(data.dir, data.filename);
+                m.read()
+                    .then((metadata) => {
+                        indexer.exists(metadata)
+                            .then(() => {
+                                console.info('-- checksum %s already exists', metadata.get('checksum'));
+                                cb();
+                            })
+                            .catch(() => {
+                                indexer.index(metadata)
+                                    .finally(() => {
+                                        cb();
+                                    });
+                            });
+                    })
+                    .catch((e) => {
+                        console.error('-- metadata:error', e);
+                        cb();
+                    });
+            });
         });
 
         w.watch().read();
     });
-}
-
-const client = new elastic.Client(config.search);
-
-client.ping({
-    // ping usually has a 3000ms timeout
-    requestTimeout: 1000
-}).then(() => {
-
-    console.info('-- cluster is alive');
-
-    let x = client.indices.create({
-        index: config.index,
-        body: {
-            settings: {
-                number_of_shards: 1
-            },
-            mappings: {
-                media: {
-                    properties: {
-                        keywords: {
-                            type: 'text'
-                        },
-                        checksum: {
-                            type: 'text'
-                        }
-                    }
-                }
-            }
-        }
-    }).then(() => {
-        console.info('-- index created');
-    }).catch(() => {
-        console.warn('-- index already exists');
-    }).finally(() => {
-        console.info('-- initiation');
-
-        init();
-    });
-
-}).catch((e) => {
-
-    console.warn('-- cluster is down!', e);
-    process.exit(-1);
-
 });

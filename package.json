@@ -15,6 +15,7 @@
         "elasticsearch": "^13.2.0",
         "lodash": "^4.17.4",
         "node-getopt": "^0.2.3",
+        "queue": "^4.2.1",
         "recursive-readdir": "^2.2.1"
     }
 }

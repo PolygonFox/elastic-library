@@ -12,6 +12,7 @@
         "checksum": null,
         "path": {
             "ignore": ["Volumes", "SMALLCAKES", "Personal", "Images"]
-        }
+        },
+        "number": null
     }
 }
