@@ -1,15 +1,18 @@
 {
-  "name": "media-library",
-  "version": "1.0.0",
-  "description": "Library engine that serves media",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Jurriën Dokter",
-  "license": "ISC",
-  "dependencies": {
-    "collections": "^5.0.6",
-    "node-getopt": "^0.2.3"
-  }
+    "name": "media-library",
+    "version": "1.0.0",
+    "description": "Library engine that serves media",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "run": "node --harmony index.js"
+    },
+    "author": "Jurriën Dokter",
+    "license": "ISC",
+    "dependencies": {
+        "collections": "^5.0.6",
+        "elasticsearch": "^13.2.0",
+        "node-getopt": "^0.2.3",
+        "recursive-readdir": "^2.2.1"
+    }
 }

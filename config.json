@@ -1,0 +1,11 @@
+{
+    "search": {
+        "host": "localhost:9200"
+    },
+    "index": "media",
+    "media": {
+        "directories": [
+            "/Volumes/SMALLCAKES/Personal/Images"
+        ]
+    }
+}
