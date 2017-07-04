@@ -1,14 +1,18 @@
+require('./lib/extend/promises');
+
 const config = require('./config.json');
 const elastic = require('elasticsearch');
 
 const Watcher = require('./lib/watcher');
 const Metadata = require('./lib/metadata');
 
-const client = new elastic.Client(config.search);
-
 let watchers = [];
 
 function init() {
+    for( const parser of config.parsers ) {
+        Metadata.addParser(require('./lib/parsers/' + parser));
+    }
+
     for( const dir of config.media.directories ) {
         watchers.push(new Watcher(dir));
     }
@@ -25,9 +29,11 @@ function init() {
             console.info('watcher:read', data);
         });
 
-        w.watch().read();
+        //w.watch().read();
     });
 }
+
+const client = new elastic.Client(config.search);
 
 client.ping({
     // ping usually has a 3000ms timeout
@@ -36,7 +42,7 @@ client.ping({
 
     console.info('-- cluster is alive');
 
-    client.indices.create({
+    let x = client.indices.create({
         index: config.index,
         body: {
             settings: {
@@ -48,7 +54,7 @@ client.ping({
                         keywords: {
                             type: 'text'
                         },
-                        md5: {
+                        checksum: {
                             type: 'text'
                         }
                     }
@@ -60,13 +66,14 @@ client.ping({
     }).catch(() => {
         console.warn('-- index already exists');
     }).finally(() => {
-        console.info('-- nothing?', arguments);
+        console.info('-- initiation');
+
         init();
     });
 
-}).catch(() => {
+}).catch((e) => {
 
-    console.warn('-- cluster is down!');
+    console.warn('-- cluster is down!', e);
     process.exit(-1);
 
 });
