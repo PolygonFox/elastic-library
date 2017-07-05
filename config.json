@@ -13,7 +13,9 @@
         "path": {
             "ignore": ["Volumes", "SMALLCAKES", "Personal", "Images"]
         },
-        "number": null
+        "number": null,
+        "exif": null,
+        "file-data": null
     },
     "mapping": {
         "media": {

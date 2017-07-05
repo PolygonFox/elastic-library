@@ -11,8 +11,53 @@ const Indexer = require('./lib/indexer');
 const watchers = [];
 const q = queue({
     autostart: true,
-    concurrently: 5
+    concurrency: 5
 });
+
+q.on('success', () => {
+    console.info('-- queue:sucess');
+});
+q.on('error', (error) => {
+    console.error('-- queue:error', error);
+});
+q.on('timeout', () => {
+    console.info('-- queue:timeout');
+});
+q.on('end', (error) => {
+    console.info('-- queue:end', error);
+});
+
+function handleFileEvent(data) {
+    q.push((cb) => {
+        let m = new Metadata(data.dir, data.filename);
+        m.read()
+            .then((metadata) => {
+                indexer.exists(metadata)
+                    .then((_id) => {
+                        console.info('-- checksum %s already exists', metadata.get('checksum'));
+                        indexer.update(metadata, _id)
+                            .finally(() => {
+                                cb();
+                            });
+                    })
+                    .catch(() => {
+                        console.info('-- %s does not exist', metadata.get('checksum'));
+                        indexer.index(metadata)
+                            .finally(() => {
+                                cb();
+                            });
+                    });
+            })
+            .catch((e) => {
+                console.error('-- metadata:error', e);
+                cb();
+            });
+    });
+
+    if (q.length > 0) {
+        q.start();
+    }
+}
 
 const indexer = new Indexer(config);
 indexer.on('ready', () => {
@@ -28,36 +73,9 @@ indexer.on('ready', () => {
     }
 
     watchers.forEach((w) => {
-
-        w.on('watcher:rename', (data) => {
-            console.info('watcher:rename', data);
-        });
-        w.on('watcher:change', (data) => {
-            console.info('watcher:change', data);
-        });
-        w.on('watcher:read', (data) => {
-            q.push((cb) => {
-                let m = new Metadata(data.dir, data.filename);
-                m.read()
-                    .then((metadata) => {
-                        indexer.exists(metadata)
-                            .then(() => {
-                                console.info('-- checksum %s already exists', metadata.get('checksum'));
-                                cb();
-                            })
-                            .catch(() => {
-                                indexer.index(metadata)
-                                    .finally(() => {
-                                        cb();
-                                    });
-                            });
-                    })
-                    .catch((e) => {
-                        console.error('-- metadata:error', e);
-                        cb();
-                    });
-            });
-        });
+        w.on('watcher:rename', handleFileEvent);
+        w.on('watcher:change', handleFileEvent);
+        w.on('watcher:read', handleFileEvent);
 
         w.watch().read();
     });
