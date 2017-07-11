@@ -34,12 +34,19 @@ class Metadata {
         });
     }
 
+    has(key) {
+        return _.has(this.data, key);
+    }
+
     set(key, value) {
         _.set(this.data, key, value);
     }
 
     add(key, value) {
         let v = this.get(key);
+        if(!v) {
+            v = [];
+        }
         if (v instanceof Array) {
             v = value instanceof Array ? _.concat(v, value) : v.push(value);
         }
@@ -54,7 +61,16 @@ class Metadata {
         return this.dir + '/' + this.file;
     }
 
+    check() {
+        // check data
+        if(!this.has('keywords')) {
+            this.set('keywords', []);
+        }
+    }
+
     get search() {
+        this.check();
+
         return this.data;
     }
 }

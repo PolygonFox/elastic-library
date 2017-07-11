@@ -1,6 +1,6 @@
-require('./lib/extend/promises');
+require('../shared/extend/promises');
 
-const config = require('./config.json');
+const config = require('../config.json');
 const elastic = require('elasticsearch');
 const queue = require('queue');
 

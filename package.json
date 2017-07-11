@@ -17,7 +17,10 @@
         "elasticsearch": "^13.2.0",
         "electron": "^1.7.4",
         "exif": "^0.6.0",
+        "jquery": "^3.2.1",
+        "jquery-match-height": "^0.7.2",
         "lodash": "^4.17.4",
+        "materialize-css": "^0.99.0",
         "queue": "^4.2.1",
         "recursive-readdir": "^2.2.1"
     },
@@ -31,23 +34,5 @@
         "esformatter-parseint": "^1.0.3",
         "esformatter-quotes": "^1.0.1",
         "esformatter-remove-object-spaces": "0.0.2"
-    },
-    "esformatter": {
-        "indent": {
-            "value": "    "
-        },
-        "plugins": [
-            "esformatter-quotes",
-            "esformatter-braces",
-            "esformatter-jsx",
-            "esformatter-curly",
-            "esformatter-dot-notation",
-            "esformatter-literal-notation",
-            "esformatter-parseint",
-            "esformatter-remove-object-spaces"
-        ],
-        "quotes": {
-            "type": "single"
-        }
     }
 }
