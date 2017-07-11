@@ -2,10 +2,11 @@
     "name": "media-library",
     "version": "1.0.0",
     "description": "Library engine that serves media",
-    "main": "index.js",
+    "main": "server/index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "node --harmony index.js"
+        "server": "node --harmony index.js",
+        "gui": "./node_modules/.bin/electron gui/index.js"
     },
     "author": "Jurriën Dokter",
     "license": "ISC",
@@ -14,6 +15,7 @@
         "checksum": "^0.1.1",
         "collections": "^5.0.6",
         "elasticsearch": "^13.2.0",
+        "electron": "^1.6.11",
         "exif": "^0.6.0",
         "lodash": "^4.17.4",
         "node-getopt": "^0.2.3",

@@ -19,9 +19,9 @@ class Watcher extends EventEmitter {
         }, (eventType, filename) => {
             /*
              * watcher:(rename|change)
-             *      { 
+             *      {
              *          dir: '/Volumes/SMALLCAKES/Personal/Images',
-             *          filename: 'WH/wallhaven-525017.jpg' 
+             *          filename: 'WH/wallhaven-525017.jpg'
              *      }
              */
             this.emit('watcher:' + eventType, {
