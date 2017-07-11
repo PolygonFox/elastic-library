@@ -9,20 +9,11 @@
 <body>
     <h2>This is a test</h2>
     <p>
-        We are using node
-        <script>
-            document.write(process.versions.node)
-
-        </script>, Chrome
-        <script>
-            document.write(process.versions.chrome)
-
-        </script>, and Electron
-        <script>
-            document.write(process.versions.electron)
-
-        </script>.
+        We are using node <script>document.write(process.versions.node)</script>, Chrome
+        <script>document.write(process.versions.chrome)</script>, and Electron
+        <script>document.write(process.versions.electron)</script>.
     </p>
+    <p>Electron's path is <script>document.write(require.resolve('electron'))</script>
 </body>
 
 </html>

@@ -5,6 +5,8 @@ const BrowserWindow = electron.BrowserWindow;
 const path = require('path');
 const url = require('url');
 
+const DEBUG = false;
+
 let mainWindow;
 
 function createWindow() {
@@ -20,7 +22,9 @@ function createWindow() {
     }));
 
     // optional, I suppose
-    mainWindow.webContents.openDevTools();
+    if(DEBUG) {
+        mainWindow.webContents.openDevTools();
+    }
 
     mainWindow.on('closed', () => {
         mainWindow = null;

@@ -5,7 +5,7 @@
     "main": "server/index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "server": "node --harmony index.js",
+        "start": "node --harmony server/index.js",
         "gui": "./node_modules/.bin/electron gui/index.js"
     },
     "author": "Jurriën Dokter",
@@ -15,11 +15,39 @@
         "checksum": "^0.1.1",
         "collections": "^5.0.6",
         "elasticsearch": "^13.2.0",
-        "electron": "^1.6.11",
+        "electron": "^1.7.4",
         "exif": "^0.6.0",
         "lodash": "^4.17.4",
-        "node-getopt": "^0.2.3",
         "queue": "^4.2.1",
         "recursive-readdir": "^2.2.1"
+    },
+    "devDependencies": {
+        "esformatter": "~0.6.0",
+        "esformatter-braces": "^1.2.1",
+        "esformatter-curly": "0.0.2",
+        "esformatter-dot-notation": "^1.3.1",
+        "esformatter-jsx": "^8.0.0",
+        "esformatter-literal-notation": "^1.0.1",
+        "esformatter-parseint": "^1.0.3",
+        "esformatter-quotes": "^1.0.1",
+        "esformatter-remove-object-spaces": "0.0.2"
+    },
+    "esformatter": {
+        "indent": {
+            "value": "    "
+        },
+        "plugins": [
+            "esformatter-quotes",
+            "esformatter-braces",
+            "esformatter-jsx",
+            "esformatter-curly",
+            "esformatter-dot-notation",
+            "esformatter-literal-notation",
+            "esformatter-parseint",
+            "esformatter-remove-object-spaces"
+        ],
+        "quotes": {
+            "type": "single"
+        }
     }
 }
