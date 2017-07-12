@@ -57,12 +57,12 @@ function search(terms) {
         $('.materialboxed').materialbox();
         //$('.chips').material_chip();
 
-        // setTimeout(() => {
-        //     $('.media-list .card').matchHeight({
-        //         byRow: true,
-        //         property: 'height'
-        //     });
-        // }, 1);
+        _.defer(() => {
+            $('.media-list .card').matchHeight({
+                byRow: true,
+                property: 'height'
+            });
+        });
     });
 }
 

@@ -1,7 +1,7 @@
-<div class="col s6 m4 l3">
+<div class="col s6 m4 l2">
     <div class="card hoverable">
         <div class="card-image">
-            <img src="{{image}}" class="materialboxed">
+            <img src="{{image}}" data-caption="{{source.title}} - {{source.keywords|sort|join>, /}}" class="materialboxed">
             <span class="card-title truncate">
                 {{if source.title}}
                 {{source.title}}
@@ -12,7 +12,7 @@
         </div>
         <div class="card-content">
             <div class="row">
-                {{source.keywords}}
+                {{source.keywords|sort}}
                 <div class="chip">
                     {{.}}
                     <i class="close material-icons">close</i>
