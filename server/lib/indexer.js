@@ -47,9 +47,9 @@ class Indexer extends events.EventEmitter {
     }
 
     /**
-     * [[Description]]
-     * @param {Metadata} metadata [[Description]]
-     * @returns {Promise} [[Description]]
+     * 
+     * @param Metadata metadata 
+     * @returns {Promise} 
      */
     index(metadata) {
         return new Promise((resolve, reject) => {
@@ -59,7 +59,7 @@ class Indexer extends events.EventEmitter {
                 body: metadata.search
             }).then((r) => {
                 console.info('-- indexed', metadata.get('file.name'));
-                resolve();
+                resolve(metadata);
             }).catch((e) => {
                 console.error('-- not indexed', metadata.search, e);
 
@@ -71,9 +71,9 @@ class Indexer extends events.EventEmitter {
     }
 
     /**
-     * [[Description]]
-     * @param {Metadata} metadata [[Description]]
-     * @returns {Promise} [[Description]]
+     * 
+     * @param Metadata metadata 
+     * @returns {Promise} 
      */
     update(metadata, id) {
         return new Promise((resolve, reject) => {
@@ -86,7 +86,7 @@ class Indexer extends events.EventEmitter {
                 }
             }).then((r) => {
                 console.info('-- updated', metadata.get('file.name'), id);
-                resolve();
+                resolve(metadata);
             }).catch((e) => {
                 console.error('-- not updated', metadata.search, e);
 
@@ -98,9 +98,9 @@ class Indexer extends events.EventEmitter {
     }
 
     /**
-     * [[Description]]
-     * @param   {Metadata} metadata [[Description]]
-     * @returns {Promise} [[Description]]
+     * 
+     * @param   Metadata metadata 
+     * @returns {Promise}
      */
     exists(metadata) {
         return new Promise((resolve, reject) => {
