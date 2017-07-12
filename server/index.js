@@ -14,9 +14,6 @@ const q = queue({
     concurrency: 5
 });
 
-q.on('success', () => {
-    console.info('-- queue:sucess');
-});
 q.on('error', (error) => {
     console.error('-- queue:error', error);
 });

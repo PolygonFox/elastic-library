@@ -68,12 +68,16 @@ function search(terms) {
 
 $(document).ready(() => {
     $('.search-input').on('keypress', (e) => {
-        pagination.from = 0;
-
         if(e.which === 13) {
+            $('.search-input').blur();
+
+            pagination.from = 0;
+
             search($('.search-input').val());
         }
     });
+
+    $('form').on('submit', () => { return false; });
 
     search($('.search-input').val());
 
@@ -83,4 +87,6 @@ $(document).ready(() => {
             search($('.search-input').val());
         }
     }, 100);
+
+    $('nav').pushpin();
 });

@@ -2,6 +2,14 @@
     background: blue;
 }
 
+.input-field {
+    z-index: 100;
+}
+
+.media-list {
+    z-index: 1;
+}
+
 .media-list .card .card-image {
     min-height: 200px;
     background-color: lightgray;
@@ -12,5 +20,5 @@
 }
 .media-list .card img.active {
     max-height: none;
-    object-fit: none;
+    object-fit: contain;
 }

@@ -61,7 +61,10 @@ class Indexer extends events.EventEmitter {
                 console.info('-- indexed', metadata.get('file.name'));
                 resolve();
             }).catch((e) => {
-                console.error('-- not indexed', metadata.get('file.name'), e);
+                console.error('-- not indexed', metadata.search, e);
+
+                process.exit(-1);
+                
                 reject();
             });
         });
@@ -82,10 +85,13 @@ class Indexer extends events.EventEmitter {
                     doc: metadata.search
                 }
             }).then((r) => {
-                console.info('-- updated', metadata.get('file.name'), id, r);
+                console.info('-- updated', metadata.get('file.name'), id);
                 resolve();
             }).catch((e) => {
-                console.error('-- not updated', metadata.get('file.name'), e);
+                console.error('-- not updated', metadata.search, e);
+
+                process.exit(-1);
+
                 reject();
             });
         });
@@ -117,7 +123,6 @@ class Indexer extends events.EventEmitter {
                 }
 
             }).catch((e) => {
-                console.error('-- exists', e);
                 reject();
             });
         });

@@ -1,6 +1,31 @@
 const Exif = require('exif');
 
 class ExifParser {
+
+    validate(value) {
+        if(value instanceof Buffer) {
+            return value.toString('utf8');
+        } else if(value instanceof Array) {
+            let primitive = true;
+            value.forEach((v, k) => {
+                if(v instanceof Object || v instanceof Array) {
+                    primitive = false;
+                }
+
+                value[k] = this.validate(v);
+            });
+
+            if(primitive) {
+                value = value.join('');
+            }
+        } else if(value instanceof Object) {
+            for(const key of Object.keys(value)) {
+                value[key] = this.validate(value[key]);
+            }
+        }
+        return value;
+    }
+
     /**
      * [[Description]]
      * @param   {Metadata} metadata [[Description]]
@@ -18,13 +43,7 @@ class ExifParser {
                         reject(error);
                     }
                 } else {
-                    for (const key in data.exif) {
-                        if (data.exif.hasOwnProperty(key) && data.exif[key] instanceof Buffer) {
-                            data.exif[key] = data.exif[key].toString('utf8');
-                        }
-                    }
-
-                    metadata.set('exif', data);
+                    metadata.set('exif', this.validate(data));
 
                     resolve();
                 }

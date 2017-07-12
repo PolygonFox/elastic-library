@@ -2,7 +2,13 @@
     <div class="card hoverable">
         <div class="card-image">
             <img src="{{image}}" class="materialboxed">
-            <span class="card-title truncate">{{source.file.name}}</span>
+            <span class="card-title truncate">
+                {{if source.title}}
+                {{source.title}}
+                {{else}}
+                {{source.file.name}}
+                {{/if}}
+            </span>
         </div>
         <div class="card-content">
             <div class="row">

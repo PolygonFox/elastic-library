@@ -14,7 +14,8 @@
             "ignore": ["Volumes", "SMALLCAKES", "Personal", "Images"]
         },
         "number": null,
-        "exif": null
+        "exif": null,
+        "deviant-art": null
     },
     "mapping": {
         "media": {

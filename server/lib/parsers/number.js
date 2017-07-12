@@ -11,7 +11,7 @@ class NumberParser {
 
             if (matches) {
                 matches = matches.map((x) => {
-                    return parseInt(x, 10);
+                    return new String(x);
                 });
             } else {
                 matches = [];
