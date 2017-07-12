@@ -1,3 +1,16 @@
 ::selection {
-    background:transparent;
+    background: blue;
+}
+
+.media-list .card .card-image {
+    min-height: 200px;
+    background-color: lightgray;
+}
+.media-list .card img {
+    max-height: 200px;
+    object-fit: cover;
+}
+.media-list .card img.active {
+    max-height: none;
+    object-fit: none;
 }

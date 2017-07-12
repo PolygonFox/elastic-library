@@ -24,7 +24,7 @@ q.on('timeout', () => {
     console.info('-- queue:timeout');
 });
 q.on('end', (error) => {
-    console.info('-- queue:end', error);
+    console.info('-- queue:end', error ? error : '');
 });
 
 function handleFileEvent(data) {

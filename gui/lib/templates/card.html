@@ -1,0 +1,18 @@
+<div class="col s6 m4 l3">
+    <div class="card hoverable">
+        <div class="card-image">
+            <img src="{{image}}" class="materialboxed">
+            <span class="card-title truncate">{{source.file.name}}</span>
+        </div>
+        <div class="card-content">
+            <div class="row">
+                {{source.keywords}}
+                <div class="chip">
+                    {{.}}
+                    <i class="close material-icons">close</i>
+                </div>
+                {{/source.keywords}}
+            </div>
+        </div>
+    </div>
+</div>

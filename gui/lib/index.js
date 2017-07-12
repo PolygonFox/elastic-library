@@ -5,12 +5,19 @@ const config = require('../../config.json');
 const $ = require('jquery');
 const _ = require('lodash');
 require('jquery-match-height');
+require('jquery-on-infinite-scroll');
 
-const Metadata = require('./metadata');
+const MetadataFormat = require('./metadata');
 
 config.search.host = "http://localhost:9200"; // needs protocol
 
 const client = new elastic.Client(config.search);
+
+const pagination = {
+    from: 0,
+    size: 50,
+    total: 0
+}
 
 function search(terms) {
     client.search({
@@ -21,17 +28,25 @@ function search(terms) {
                 bool: {
                     must: {
                         query_string: {
-                            query: "*:*"
+                            query: terms
                         }
                     }
                 }
-            }
+            },
+            size: pagination.size,
+            from: pagination.from
         }
     }).then((results) => {
-        $('.media-list').empty();
+        if(pagination.from === 0) {
+            $('.media-list').empty();
+        }
+
+        console.info('-- searched for', terms, 'found', results.hits.hits.length);
+
+        pagination.total = results.hits.total;
 
         for(const hit of results.hits.hits) {
-            let m = new Metadata(hit);
+            let m = new MetadataFormat(hit);
             let f = m.format();
 
             $('.media-list').append(f);
@@ -40,24 +55,32 @@ function search(terms) {
         console.error('-- error', error);
     }).finally(() => {
         $('.materialboxed').materialbox();
+        //$('.chips').material_chip();
 
-        setTimeout(() => {
-            $('.media-list .card').matchHeight({
-                byRow: true,
-                property: 'height'
-            });
-        }, 1);
+        // setTimeout(() => {
+        //     $('.media-list .card').matchHeight({
+        //         byRow: true,
+        //         property: 'height'
+        //     });
+        // }, 1);
     });
 }
 
 $(document).ready(() => {
-    $('.search-input').on('keyup', _.debounce(() => {
-        let terms = $('.search-input').val();
+    $('.search-input').on('keypress', (e) => {
+        pagination.from = 0;
 
-        search(terms);
-    }, 250));
+        if(e.which === 13) {
+            search($('.search-input').val());
+        }
+    });
 
-    Materialize.scrollFire([
-        { selector: '.end', offset: 0, callback: () => { console.info('-- fired'); }}
-    ])
+    search($('.search-input').val());
+
+    $.onInfiniteScroll(() => {
+        pagination.from += pagination.size;
+        if(pagination.from < pagination.total) {
+            search($('.search-input').val());
+        }
+    }, 100);
 });

@@ -1,8 +1,11 @@
 const url = require('url');
+const _ = require('lodash');
+const Formatter = require('./formatter');
 
-class Metadata {
+class MetadataFormat {
     constructor(properties) {
         this.properties = properties;
+        this.formatter = new Formatter();
     }
 
     get source() {
@@ -18,19 +21,11 @@ class Metadata {
     }
 
     format() {
-        return `
-        <div class="col s6 m4 l3">
-            <div class="card hoverable">
-                <div class="card-image">
-                    <img src="${this.image}" class="materialboxed">
-                    <span class="card-title truncate">${this.source.file.name}</span>
-                </div>
-                <div class="card-content">
-                    <p class="truncate">${this.source.checksum}</p>
-                </div>
-            </div>
-        </div>`;
+        return this.formatter.format('./templates/card.html', {
+            image: this.image,
+            source: this.source
+        });
     }
 }
 
-module.exports = Metadata;
+module.exports = MetadataFormat;

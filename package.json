@@ -19,7 +19,9 @@
         "exif": "^0.6.0",
         "jquery": "^3.2.1",
         "jquery-match-height": "^0.7.2",
+        "jquery-on-infinite-scroll": "^1.0.1",
         "lodash": "^4.17.4",
+        "markup-js": "^1.5.21",
         "materialize-css": "^0.99.0",
         "queue": "^4.2.1",
         "recursive-readdir": "^2.2.1"
