@@ -2,7 +2,7 @@ const url = require('url');
 const _ = require('lodash');
 const Formatter = require('./formatter');
 
-class MetadataFormat {
+class SlideshowFormatter {
     constructor(properties) {
         this.properties = properties;
         this.formatter = new Formatter();
@@ -24,11 +24,11 @@ class MetadataFormat {
     }
 
     format() {
-        return this.formatter.format('./templates/card.html', {
+        return this.formatter.format('./templates/slide.html', {
             image: this.image,
             source: this.source
         });
     }
 }
 
-module.exports = MetadataFormat;
+module.exports = SlideshowFormatter;

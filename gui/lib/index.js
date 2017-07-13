@@ -8,6 +8,7 @@ require('jquery-match-height');
 require('jquery-on-infinite-scroll');
 
 const MetadataFormat = require('./metadata');
+const SlideshowFormat = require('./slideshow');
 
 config.search.host = "http://localhost:9200"; // needs protocol
 
@@ -17,6 +18,16 @@ const pagination = {
     from: 0,
     size: 50,
     total: 0
+}
+
+let currentResults = [];
+let slideshowActive = false;
+
+function shuffle(a) {
+    for (let i = a.length; i; i--) {
+        let j = Math.floor(Math.random() * i);
+        [a[i - 1], a[j]] = [a[j], a[i - 1]];
+    }
 }
 
 function search(terms) {
@@ -39,17 +50,18 @@ function search(terms) {
     }).then((results) => {
         if(pagination.from === 0) {
             $('.media-list').empty();
+            currentResults.length = 0; // reset slideshow
         }
 
         console.info('-- searched for', terms, 'found', results.hits.hits.length);
 
         pagination.total = results.hits.total;
+        currentResults = _.concat(currentResults, results.hits.hits);
 
         for(const hit of results.hits.hits) {
             let m = new MetadataFormat(hit);
-            let f = m.format();
 
-            $('.media-list').append(f);
+            $('.media-list').append(m.format());
         }
     }).catch((error) => {
         console.error('-- error', error);
@@ -63,6 +75,24 @@ function search(terms) {
                 property: 'height'
             });
         });
+    });
+}
+
+function slideshow() {
+    const slider = $('<div class="slider fullscreen"><ul class="slides"></ul></div>');
+    shuffle(currentResults);
+
+    for(const result of currentResults) {
+        let s = new SlideshowFormat(result);
+
+        slider.find('.slides')
+        .append(s.format());
+    }
+
+    $('body').append(slider).find('.slider').slider({
+        indicators: false,
+        interval: 3000,
+        transition: 250
     });
 }
 
@@ -90,3 +120,15 @@ $(document).ready(() => {
 
     $('nav').pushpin();
 });
+
+module.exports = {
+    toggleSlideshow: () => {
+        if($('body').hasClass('slideshow')) {
+            $('body').removeClass('slideshow');
+            $('.slider').remove();
+        } else {
+            $('body').addClass('slideshow');
+            slideshow();
+        }
+    }
+}

@@ -81,9 +81,7 @@ class Indexer extends events.EventEmitter {
                 index: this._index,
                 type: 'media',
                 id: id,
-                body: {
-                    doc: metadata.search
-                }
+                body: metadata.search
             }).then((r) => {
                 console.info('-- updated', metadata.get('file.name'), id);
                 resolve(metadata);

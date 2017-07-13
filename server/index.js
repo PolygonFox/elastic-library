@@ -32,10 +32,15 @@ function handleFileEvent(data) {
                 indexer.exists(metadata)
                     .then((_id) => {
                         console.info('-- checksum %s already exists', metadata.get('checksum'));
+                        
+                        /* // skipping updating for now
                         indexer.update(metadata, _id)
                             .finally(() => {
                                 cb();
                             });
+                        */
+
+                        cb();
                     })
                     .catch(() => {
                         console.info('-- %s does not exist', metadata.get('checksum'));

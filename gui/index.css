@@ -22,3 +22,17 @@
     max-height: none;
     object-fit: contain;
 }
+
+.slider.fullscreen {
+    position: fixed !important;
+}
+
+.slider .slides li img {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: #000000;
+}
+
+.slideshow .navbar-fixed {
+    display: none;
+}
