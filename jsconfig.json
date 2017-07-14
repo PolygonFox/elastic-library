@@ -3,6 +3,20 @@
         "target": "es6",
         "checkJs": true
     },
+    "typeAcquisition": {
+        "enable": true,
+        "include": [
+            "lodash", 
+            "jquery", 
+            "elasticsearch", 
+            "electron"
+        ]
+    },
+    "typingOptions": {
+        "enableAutoDiscovery": true
+    },
+    "compileOnSave": true,
+    "enableAutoDiscovery": true,
     "exclude": [
         "node_modules",
         "gui/materialize"
