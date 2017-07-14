@@ -5,7 +5,7 @@ const BrowserWindow = electron.BrowserWindow;
 const path = require('path');
 const url = require('url');
 
-const DEBUG = true;
+const DEBUG = false;
 
 let mainWindow;
 
