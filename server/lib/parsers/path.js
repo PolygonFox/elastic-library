@@ -10,7 +10,7 @@ class PathParser {
      * @returns {Promise} [[Description]]
      */
     parse(metadata) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             let pathdata = path.parse(metadata.getFilePath());
 
             let dirs = pathdata.dir.split(path.sep).filter((i) => {

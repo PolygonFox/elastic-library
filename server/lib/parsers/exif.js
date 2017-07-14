@@ -33,7 +33,7 @@ class ExifParser {
      */
     parse(metadata) {
         return new Promise((resolve, reject) => {
-            const image = new Exif({
+            new Exif({
                 image: metadata.getFilePath()
             }, (error, data) => {
                 if (error) {

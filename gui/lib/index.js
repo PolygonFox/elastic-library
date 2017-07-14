@@ -21,7 +21,6 @@ const pagination = {
 }
 
 let currentResults = [];
-let slideshowActive = false;
 
 function shuffle(a) {
     for (let i = a.length; i; i--) {

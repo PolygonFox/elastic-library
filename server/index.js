@@ -1,7 +1,6 @@
 require('../shared/extend/promises');
 
 const config = require('../config.json');
-const elastic = require('elasticsearch');
 const queue = require('queue');
 
 const Watcher = require('./lib/watcher');
@@ -31,7 +30,7 @@ function handleFileEvent(data) {
             .then((metadata) => {
                 indexer.exists(metadata)
                     .then((_id) => {
-                        console.info('-- checksum %s already exists', metadata.get('checksum'));
+                        console.info('-- checksum %s already exists', metadata.get('checksum'), _id);
                         
                         /* // skipping updating for now
                         indexer.update(metadata, _id)

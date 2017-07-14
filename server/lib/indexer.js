@@ -57,7 +57,7 @@ class Indexer extends events.EventEmitter {
                 index: this._index,
                 type: 'media',
                 body: metadata.search
-            }).then((r) => {
+            }).then(() => {
                 console.info('-- indexed', metadata.get('file.name'));
                 resolve(metadata);
             }).catch((e) => {
@@ -82,7 +82,7 @@ class Indexer extends events.EventEmitter {
                 type: 'media',
                 id: id,
                 body: metadata.search
-            }).then((r) => {
+            }).then(() => {
                 console.info('-- updated', metadata.get('file.name'), id);
                 resolve(metadata);
             }).catch((e) => {
@@ -120,7 +120,7 @@ class Indexer extends events.EventEmitter {
                     reject();
                 }
 
-            }).catch((e) => {
+            }).catch(() => {
                 reject();
             });
         });

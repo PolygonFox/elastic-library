@@ -1,5 +1,4 @@
 const url = require('url');
-const _ = require('lodash');
 const Formatter = require('./formatter');
 
 class SlideshowFormatter {

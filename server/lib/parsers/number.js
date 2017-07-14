@@ -5,7 +5,7 @@ class NumberParser {
      * @returns {Promise} [[Description]]
      */
     parse(metadata) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
 
             let matches = metadata.file.match(/[0-9]{4,}/g);
 

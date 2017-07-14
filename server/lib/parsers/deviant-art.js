@@ -4,7 +4,7 @@ class DeviantArtParser {
      * @returns {Promise}
      */
     parse(metadata) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
 
             if(metadata.has('keywords')) {
                 if(metadata.get('keywords').indexOf('DeviantArt') > -1) {
