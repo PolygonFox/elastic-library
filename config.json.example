@@ -5,13 +5,13 @@
     "index": "media",
     "media": {
         "directories": [
-            "/Volumes/SMALLCAKES/Personal/Images"
         ]
     },
     "parsers": {
         "checksum": null,
         "path": {
-            "ignore": ["Volumes", "SMALLCAKES", "Personal", "Images"]
+            "ignore": [
+            ]
         },
         "number": null,
         "exif": null,

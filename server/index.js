@@ -2,6 +2,7 @@ require('../shared/extend/promises');
 
 const config = require('../config.json');
 const queue = require('queue');
+const fs = require('fs');
 
 const Watcher = require('./lib/watcher');
 const Metadata = require('./lib/metadata');
@@ -70,7 +71,9 @@ indexer.on('ready', () => {
     }
 
     for (const dir of config.media.directories) {
-        watchers.push(new Watcher(dir));
+        if(fs.existsSync(dir)) {
+            watchers.push(new Watcher(dir));
+        }
     }
 
     watchers.forEach((w) => {
