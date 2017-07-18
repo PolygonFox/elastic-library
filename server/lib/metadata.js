@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const flatten = require('../../shared/extend').flatten;
 
 const parsers = [];
 
@@ -7,6 +8,7 @@ class Metadata {
         this.dir = dir;
         this.file = file;
         this.data = {};
+        this.cleanData = {};
     }
 
     static addParser(parser) {
@@ -39,6 +41,10 @@ class Metadata {
     }
 
     set(key, value) {
+        if(value instanceof String) {
+            value = value.toString();
+        }
+
         _.set(this.data, key, value);
     }
 
@@ -66,6 +72,32 @@ class Metadata {
         if(!this.has('keywords')) {
             this.set('keywords', []);
         }
+    }
+
+    get dirty() {
+        const dirty = {};
+
+        const _new = flatten(this.data);
+        const _old = flatten(this.cleanData);
+
+        const _keys = _.merge(_.keys(_old), _.keys(_new));
+
+        for(const key of _keys) {
+            if(_new[key] instanceof Array) {
+                // own check
+                if(!_new[key].compare(_old[key])) {
+                    dirty[key] = _new[key];
+                }
+            } else if(_new[key] != _old[key]) {
+                dirty[key] = _new[key];
+            }
+        }
+
+        return dirty;
+    }
+
+    isDirty() {
+        return _.keys(this.dirty).length > 0;
     }
 
     get search() {

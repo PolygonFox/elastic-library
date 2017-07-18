@@ -39,6 +39,7 @@ class Indexer extends events.EventEmitter {
             console.info('-- index created');
         }).catch(() => {
             console.warn('-- index already exists');
+        // @ts-ignore
         }).finally(() => {
             console.info('-- initiation');
 
@@ -75,18 +76,24 @@ class Indexer extends events.EventEmitter {
      * @param Metadata metadata 
      * @returns {Promise} 
      */
-    update(metadata, id) {
+    update(metadata, script, id) {
         return new Promise((resolve, reject) => {
-            this._client.index({
+            const request = {
                 index: this._index,
                 type: 'media',
                 id: id,
-                body: metadata.search
-            }).then(() => {
+                body: script
+            };
+
+            this._client.update(request).then((r) => {
                 console.info('-- updated', metadata.get('file.name'), id);
+
+                console.info('-- result', r);
+                process.exit(-1);
+
                 resolve(metadata);
             }).catch((e) => {
-                console.error('-- not updated', metadata.search, e);
+                console.error('-- not updated\n', JSON.stringify(request), '\n', JSON.stringify(JSON.parse(e.response)));
 
                 process.exit(-1);
 
@@ -115,7 +122,10 @@ class Indexer extends events.EventEmitter {
                 }
             }).then((result) => {
                 if (result.hits.total > 0) {
-                    resolve(result.hits.hits[0]._id);
+                    resolve({
+                        id: result.hits.hits[0]._id, 
+                        data: result.hits.hits[0]._source
+                    });
                 } else {
                     reject();
                 }

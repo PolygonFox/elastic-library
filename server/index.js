@@ -1,7 +1,9 @@
 require('../shared/extend/promises');
 
+const flatten = require('../shared/extend').flatten;
 const config = require('../config.json');
 const queue = require('queue');
+const _ = require('lodash');
 const fs = require('fs');
 
 const Watcher = require('./lib/watcher');
@@ -30,9 +32,43 @@ function handleFileEvent(data) {
         m.read()
             .then((metadata) => {
                 indexer.exists(metadata)
-                    .then((_id) => {
-                        console.info('-- checksum %s already exists', metadata.get('checksum'), _id);
-                        
+                    .then((d) => {
+                        console.info('-- checksum %s already exists', metadata.get('checksum'), d.id);
+                        metadata.cleanData = d.data;
+
+                        if(metadata.isDirty()) {
+                            console.info('-- original', flatten(d.data));
+                            console.info('-- new', flatten(metadata.data));
+                            console.info('-- what is dirty?', metadata.dirty);
+
+                            const script = [];
+
+                            // make script with "dirty"
+                            _.keys(metadata.dirty).forEach((key) => {
+                                const value = metadata.dirty[key];
+                                if(value instanceof Array) {
+                                    value.forEach((item) => {
+                                        script.push('ctx._source.' + key + '.add(' + JSON.stringify(item) + ');');
+                                    });
+                                } else {
+                                    script.push('ctx._source.' + key + ' = ' + JSON.stringify(value) + ';');
+                                }
+                            });
+
+                            console.info('-- updating!');
+
+                            indexer.update(metadata, {
+                                script: script.join(' '),
+                                params: metadata.dirty
+                            }, d.id).then((r) => {
+                                console.info('-- updated', r);
+                                process.exit(-1);
+                            }).catch((e) => {
+                                console.warn('-- failed to update', e);
+                                process.exit(-1);
+                            });
+                        }
+
                         /* // skipping updating for now
                         indexer.update(metadata, _id)
                             .finally(() => {
@@ -45,6 +81,7 @@ function handleFileEvent(data) {
                     .catch(() => {
                         console.info('-- %s does not exist', metadata.get('checksum'));
                         indexer.index(metadata)
+                            // @ts-ignore
                             .finally(() => {
                                 cb();
                             });

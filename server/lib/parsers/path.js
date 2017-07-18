@@ -6,8 +6,8 @@ class PathParser {
     }
 
     /**
-     * @param {Metadata} metadata [[Description]]
-     * @returns {Promise} [[Description]]
+     * @param {Metadata} metadata
+     * @returns {Promise}
      */
     parse(metadata) {
         return new Promise((resolve) => {
