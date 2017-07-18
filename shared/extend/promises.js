@@ -10,3 +10,5 @@ Promise.prototype.finally = function (callback) {
         reason => P.resolve(callback()).then(() => { throw reason; })
     );
 };
+
+module.exports = Promise;

@@ -1,10 +1,13 @@
 require('../../shared/extend/promises');
 
 const elastic = require('elasticsearch');
+// @ts-ignore
 const config = require('../../config.json');
 const $ = require('jquery');
 const _ = require('lodash');
+// @ts-ignore
 require('jquery-match-height');
+// @ts-ignore
 require('jquery-on-infinite-scroll');
 
 const MetadataFormat = require('./metadata');
@@ -52,7 +55,7 @@ function search(terms) {
             currentResults.length = 0; // reset slideshow
         }
 
-        console.info('-- searched for', terms, 'found', results.hits.hits.length);
+        console.info('-- searched for', terms, 'found', results.hits.hits.length, 'page', pagination.from);
 
         pagination.total = results.hits.total;
         currentResults = _.concat(currentResults, results.hits.hits);
@@ -60,13 +63,18 @@ function search(terms) {
         for(const hit of results.hits.hits) {
             let m = new MetadataFormat(hit);
 
-            $('.media-list').append(m.format());
+            let f = $(m.format());
+            let e = $('<div class="col s6 m3 l4" />').append(f);
+            e.data('meta', m);
+            e.appendTo('.media-list');
+
+            m.container = e;
+            m.created();
         }
     }).catch((error) => {
         console.error('-- error', error);
     }).finally(() => {
         $('.materialboxed').materialbox();
-        //$('.chips').material_chip();
 
         _.defer(() => {
             $('.media-list .card').matchHeight({
@@ -110,6 +118,7 @@ $(document).ready(() => {
 
     search($('.search-input').val());
 
+    // @ts-ignore
     $.onInfiniteScroll(() => {
         pagination.from += pagination.size;
         if(pagination.from < pagination.total) {
@@ -129,5 +138,8 @@ module.exports = {
             $('body').addClass('slideshow');
             slideshow();
         }
+    },
+    getClient: () => {
+        return client;
     }
-}
+};

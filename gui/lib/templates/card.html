@@ -1,24 +1,15 @@
-<div class="col s6 m4 l2">
-    <div class="card hoverable">
-        <div class="card-image">
-            <img src="{{image}}" data-caption="{{source.title}} - {{source.keywords|sort|join>, /}}" class="materialboxed">
-            <span class="card-title truncate">
-                {{if source.title}}
-                {{source.title}}
-                {{else}}
-                {{source.file.name}}
-                {{/if}}
-            </span>
-        </div>
-        <div class="card-content">
-            <div class="row">
-                {{source.keywords|sort}}
-                <div class="chip">
-                    {{.}}
-                    <i class="close material-icons">close</i>
-                </div>
-                {{/source.keywords}}
-            </div>
-        </div>
+<div class="card hoverable">
+    <div class="card-image">
+        <img src="{{image}}" data-caption="{{source.title}} - {{source.keywords|sort|join>, /}}" class="materialboxed">
+        <span class="card-title truncate">
+            {{if source.title}}
+            {{source.title}}
+            {{else}}
+            {{source.file.name}}
+            {{/if}}
+        </span>
+    </div>
+    <div class="card-content">
+        <div class="row chips"></div>
     </div>
 </div>
