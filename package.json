@@ -1,5 +1,5 @@
 {
-    "name": "media-library",
+    "name": "elastic-library",
     "version": "1.0.0",
     "description": "Library engine that serves media",
     "main": "server/index.js",
